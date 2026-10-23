@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#176b5b"><meta name="description" content="رفيق الأستاذ: أدوات تربوية مجانية">
+<link rel="manifest" href="manifest.json">
+<title>رفيق الأستاذ</title>
+<style>
+:root{--green:#176b5b;--mint:#e7f5ef;--ink:#18312d;--paper:#f5f8f6;--line:#d9e5df}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans Arabic",Arial,sans-serif;background:var(--paper);color:var(--ink)}
+header{background:linear-gradient(135deg,#176b5b,#27977c);color:white;padding:22px 17px 25px;border-radius:0 0 24px 24px}
+header h1{margin:0 0 6px;font-size:26px}header p{margin:0;opacity:.92;font-size:14px}
+main{max-width:850px;margin:auto;padding:15px}
+.nav{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:-5px}
+.nav button{background:white;border:1px solid var(--line);border-radius:14px;padding:13px 5px;color:var(--ink);font-weight:700;box-shadow:0 3px 10px #143c2d0a}
+.nav button.active{background:var(--mint);border-color:#7fb9a6;color:var(--green)}
+.panel{display:none;margin-top:16px;background:white;border:1px solid var(--line);border-radius:18px;padding:17px;box-shadow:0 5px 20px #173b2d08}.panel.active{display:block}
+h2{font-size:20px;margin:0 0 15px}label{display:block;font-weight:650;font-size:14px;margin:12px 0 5px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cbdad2;border-radius:10px;background:#fff;font:inherit;color:inherit}
+textarea{min-height:82px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.primary,.secondary,.danger{border:0;border-radius:10px;padding:11px 14px;font:inherit;font-weight:700;cursor:pointer;margin-top:12px}
+.primary{background:var(--green);color:white}.secondary{background:var(--mint);color:var(--green)}.danger{background:#fff0ed;color:#9a3226}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.item{border:1px solid var(--line);padding:12px;border-radius:12px;margin:10px 0}.item h3{margin:0 0 6px;font-size:16px}.muted{color:#667b73;font-size:13px}.empty{padding:18px;text-align:center;color:#667b73;background:#f8fbf9;border-radius:12px}
+#mapview{min-height:130px;background:#f4faf6;border-radius:12px;padding:12px;white-space:pre-wrap}
+footer{text-align:center;color:#71837b;font-size:12px;padding:22px}
+@media(max-width:430px){.row{grid-template-columns:1fr}.nav button{font-size:12px}}
+@media print{header,.nav,.actions,.primary,.secondary,.danger,footer{display:none!important}body,.panel{background:white;border:0;box-shadow:none}.panel{display:block!important}}
+</style></head>
+<body>
+<header><h1>🌿 رفيق الأستاذ</h1><p>فضاء تربوي مجاني لتنظيم العمل اليومي للأستاذ</p></header>
+<main>
+<div class="nav" role="navigation">
+<button class="active" data-tab="lesson">📝 المذكرة اليومية</button>
+<button data-tab="mind">🧠 خطاطة ذهنية</button>
+<button data-tab="archive">🗂️ الأرشيف</button>
+<button data-tab="timetable">🕒 استعمال الزمن</button>
+<button data-tab="assessment">📊 التقويم</button>
+<button data-tab="tools">🧰 أدوات أخرى</button>
+</div>
+<section id="lesson" class="panel active">
+<h2>إعداد المذكرة اليومية</h2>
+<div class="row"><div><label>الأستاذ(ة)</label><input id="teacher" placeholder="اسم الأستاذ"></div><div><label>المؤسسة</label><input id="school" placeholder="اسم المؤسسة"></div></div>
+<div class="row"><div><label>المستوى</label><select id="level"><option>الأول ابتدائي</option><option>الثاني ابتدائي</option><option>الثالث ابتدائي</option><option>الرابع ابتدائي</option><option>الخامس ابتدائي</option><option>السادس ابتدائي</option></select></div><div><label>التاريخ</label><input id="date" type="date"></div></div>
+<div class="row"><div><label>المادة</label><input id="subject" placeholder="مثال: اللغة العربية"></div><div><label>المدة</label><input id="duration" placeholder="مثال: 45 دقيقة"></div></div>
+<label>عنوان الدرس / الهدف</label><input id="objective" placeholder="عنوان الدرس والهدف التعلمي">
+<label>المراحل ودور الأستاذ</label><textarea id="teacherRole" placeholder="التمهيد، بناء التعلمات، التطبيق..."></textarea>
+<label>دور المتعلم والأنشطة</label><textarea id="studentRole" placeholder="ماذا سينجز المتعلم؟"></textarea>
+<label>الوسائل والتقويم</label><textarea id="resources" placeholder="الوسائل، أسئلة التقويم، الدعم..."></textarea>
+<div class="actions"><button class="primary" onclick="saveLesson()">حفظ في الأرشيف</button><button class="secondary" onclick="window.print()">طباعة / PDF</button><button class="secondary" onclick="clearLesson()">تفريغ الخانات</button></div>
+</section>
+<section id="mind" class="panel">
+<h2>إنشاء خطاطة ذهنية نصية</h2>
+<label>الفكرة الرئيسية</label><input id="mindTitle" placeholder="مثال: الجملة الاسمية">
+<label>الأفكار الفرعية (كل فكرة في سطر)</label><textarea id="mindBranches" placeholder="المبتدأ&#10;الخبر&#10;أمثلة"></textarea>
+<button class="primary" onclick="drawMind()">إنشاء الخطاطة</button> <button class="secondary" onclick="window.print()">طباعة / PDF</button>
+<div id="mapview" style="margin-top:14px">ستظهر الخطاطة هنا.</div>
+</section>
+<section id="archive" class="panel"><h2>الأرشيف التربوي</h2><p class="muted">المحفوظات تبقى على هذا الجهاز والمتصفح فقط. استعمل التصدير للاحتفاظ بنسخة.</p><div class="actions"><button class="secondary" onclick="exportData()">تصدير نسخة احتياطية</button><label class="secondary" style="display:inline-block;cursor:pointer">استيراد نسخة<input type="file" accept=".json,application/json" style="display:none" onchange="importData(event)"></label></div><div id="archiveList"></div></section>
+<section id="timetable" class="panel"><h2>استعمال الزمن</h2><p class="muted">دخل الحصص ديالك ثم طبع الجدول أو حفظه في الأرشيف.</p>
+<div class="row"><div><label>اليوم</label><select id="day"><option>الاثنين</option><option>الثلاثاء</option><option>الأربعاء</option><option>الخميس</option><option>الجمعة</option><option>السبت</option></select></div><div><label>التوقيت</label><input id="hours" placeholder="08:00 إلى 10:25"></div></div>
+<div class="row"><div><label>المادة / النشاط</label><input id="periodSubject" placeholder="اللغة العربية"></div><div><label>القسم</label><input id="className" placeholder="المستوى"></div></div>
+<button class="primary" onclick="addPeriod()">إضافة الحصة</button> <button class="secondary" onclick="window.print()">طباعة / PDF</button><div id="periodList"></div></section>
+<section id="assessment" class="panel"><h2>تتبع التقويم والدعم</h2>
+<div class="row"><div><label>المتعلم (اختياري)</label><input id="pupil" placeholder="اسم المتعلم أو رمزه"></div><div><label>المستوى</label><select id="assLevel"><option>الأول ابتدائي</option><option>الثاني ابتدائي</option><option>الثالث ابتدائي</option><option>الرابع ابتدائي</option><option>الخامس ابتدائي</option><option>السادس ابتدائي</option></select></div></div>
+<label>المهارة المستهدفة</label><input id="skill" placeholder="مثال: قراءة المقاطع">
+<div class="row"><div><label>المستوى المحقق</label><select id="result"><option>متحكم</option><option>في طور التحكم</option><option>يحتاج إلى دعم</option></select></div><div><label>تاريخ التتبع</label><input id="assDate" type="date"></div></div>
+<label>ملاحظات وخطة الدعم</label><textarea id="notes" placeholder="ملاحظات مختصرة وإجراء الدعم"></textarea>
+<button class="primary" onclick="saveAssessment()">حفظ التتبع</button><div id="assessmentList"></div></section>
+<section id="tools" class="panel"><h2>أدوات الأستاذ</h2><div class="item"><h3>🎲 مولّد نشاط سريع</h3><p>اختار نوع النشاط للحصول على فكرة قابلة للتعديل.</p><select id="activityType"><option value="reading">القراءة</option><option value="writing">ما قبل الكتابة</option><option value="math">الرياضيات</option><option value="movement">نشاط حركي</option></select><button class="primary" onclick="suggestActivity()">اقترح نشاطاً</button><div id="activityOutput" class="item">الاقتراح سيظهر هنا.</div></div>
+<div class="item"><h3>💾 حفظ بياناتك</h3><p>المعلومات تُحفظ محلياً على جهازك، ولا تتزامن تلقائياً مع أجهزة أخرى.</p><button class="secondary" onclick="exportData()">تنزيل نسخة احتياطية</button></div>
+<div class="item"><h3>📱 تثبيت التطبيق</h3><p>بعد رفعه إلى استضافة HTTPS، افتح الرابط في Chrome ثم من القائمة اختَر «إضافة إلى الشاشة الرئيسية» أو «تثبيت التطبيق» إن ظهر الخيار.</p></div></section>
+</main><footer>رفيق الأستاذ • نسخة تجريبية مجانية • البيانات محفوظة محلياً على جهازك</footer>
+<script>
+const $=id=>document.getElementById(id);
+const get=(k,d=[])=>{try{return JSON.parse(localStorage.getItem(k))||d}catch{return d}};
+const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+$("date").value=new Date().toISOString().slice(0,10);$("assDate").value=$("date").value;
+document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".panel").forEach(x=>x.classList.toggle("active",x.id===b.dataset.tab));if(b.dataset.tab==="archive")renderArchive();if(b.dataset.tab==="timetable")renderPeriods();if(b.dataset.tab==="assessment")renderAssessments()}));
+function saveLesson(){let v={id:Date.now(),type:"lesson",title:$("objective").value||"مذكرة يومية",teacher:$("teacher").value,school:$("school").value,level:$("level").value,date:$("date").value,subject:$("subject").value,duration:$("duration").value,objective:$("objective").value,teacherRole:$("teacherRole").value,studentRole:$("studentRole").value,resources:$("resources").value};let a=get("archive");a.unshift(v);put("archive",a);alert("تحفظات المذكرة فالأرشيف ديال هاد الجهاز.");}
+function clearLesson(){["subject","duration","objective","teacherRole","studentRole","resources"].forEach(x=>$(x).value="")}
+function renderArchive(){let a=get("archive");$("archiveList").innerHTML=a.length?a.map(v=>`<div class="item"><h3>${esc(v.title||v.subject||v.type)}</h3><p class="muted">${esc(v.date||"")} • ${esc(v.level||"")}</p><p>${esc(v.subject||v.skill||"")}</p><div class="actions"><button class="secondary" onclick="viewItem(${v.id})">عرض</button><button class="danger" onclick="deleteItem(${v.id})">حذف</button></div></div>`).join(""):'<div class="empty">مازال ما كاين حتى عنصر فالأرشيف.</div>'}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function deleteItem(id){put("archive",get("archive").filter(x=>x.id!==id));renderArchive()}
+function viewItem(id){let v=get("archive").find(x=>x.id===id);if(!v)return;alert(Object.entries(v).filter(([k])=>k!=="id").map(([k,val])=>k+": "+val).join("\n"))}
+function drawMind(){let title=esc($("mindTitle").value||"الفكرة الرئيسية"), branches=$("mindBranches").value.split("\n").map(x=>x.trim()).filter(Boolean);$("mapview").innerHTML='<div style="text-align:center;background:#176b5b;color:white;padding:13px;border-radius:12px;font-weight:800">'+title+'</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px;margin-top:12px">'+branches.map(x=>'<div style="background:#e7f5ef;border:1px solid #b7d9cb;padding:12px;border-radius:10px;text-align:center">'+esc(x)+'</div>').join("")+'</div>'; }
+function addPeriod(){let v={id:Date.now(),day:$("day").value,hours:$("hours").value,subject:$("periodSubject").value,cl:$("className").value};let a=get("periods");a.push(v);put("periods",a);renderPeriods();$("hours").value="";$("periodSubject").value="";$("className").value=""}
+function renderPeriods(){let a=get("periods");$("periodList").innerHTML=a.length?a.map(v=>`<div class="item"><b>${esc(v.day)} — ${esc(v.hours)}</b><p>${esc(v.subject)} • ${esc(v.cl)}</p><button class="danger" onclick="removePeriod(${v.id})">حذف</button></div>`).join(""):'<div class="empty">مازال ما زدتي حتى حصة.</div>'}
+function removePeriod(id){put("periods",get("periods").filter(x=>x.id!==id));renderPeriods()}
+function saveAssessment(){let v={id:Date.now(),type:"assessment",title:"تتبع التقويم",pupil:$("pupil").value,level:$("assLevel").value,skill:$("skill").value,result:$("result").value,date:$("assDate").value,notes:$("notes").value};let a=get("assessments");a.unshift(v);put("assessments",a);renderAssessments();alert("تحفظ التتبع.");}
+function renderAssessments(){let a=get("assessments");$("assessmentList").innerHTML=a.length?a.map(v=>`<div class="item"><h3>${esc(v.pupil||"متعلم")} — ${esc(v.result)}</h3><p>${esc(v.skill)} • ${esc(v.date)}</p><p>${esc(v.notes)}</p><button class="danger" onclick="deleteAssessment(${v.id})">حذف</button></div>`).join(""):'<div class="empty">مازال ما تسجّل حتى تتبع.</div>'}
+function deleteAssessment(id){put("assessments",get("assessments").filter(x=>x.id!==id));renderAssessments()}
+function exportData(){let data={archive:get("archive"),periods:get("periods"),assessments:get("assessments")};let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="rafiq-alostad-backup.json";a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);["archive","periods","assessments"].forEach(k=>{if(Array.isArray(d[k]))put(k,d[k])});renderArchive();renderPeriods();renderAssessments();alert("تم استيراد النسخة.")}catch{alert("الملف غير صالح.")}};r.readAsText(f)}
+function suggestActivity(){let opts={reading:["بطاقات المقاطع: يقرأ المتعلم المقطع ثم يبحث عن صورة تناسبه.","صيد الكلمات: ابحثوا في القسم عن كلمات تبدأ بالصوت المستهدف."],writing:["مسارات على الرمل أو الهواء: يتتبع المتعلم شكلاً بإصبعه ثم على الورق.","وصل النقاط لتكوين خطوط مستقيمة ومنحنية قبل كتابة الحرف."],math:["متجر القسم: عدّ أشياء صغيرة وصنّفها ثم كوّن مجموعات.","بطاقات الأعداد: رتّب الأعداد من الأصغر إلى الأكبر مع تبرير الاختيار."],movement:["سباق المحطات: ينتقل المتعلم بين محطات قصيرة ويحل سؤالاً في كل محطة.","كرة السؤال: يمرر المتعلم الكرة، ومن يستقبلها يجيب عن سؤال الدرس."]};let arr=opts[$("activityType").value];$("activityOutput").textContent=arr[Math.floor(Math.random()*arr.length)]}
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
+renderArchive();renderPeriods();renderAssessments();
+</script></body></html>
